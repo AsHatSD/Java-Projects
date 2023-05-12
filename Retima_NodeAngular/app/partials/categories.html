@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="panel">
+    <div class="panel-heading">
+      <h3 class="panel-title">Varekategori</h3>
+    </div>
+    <div ng-if="currentUser.type === 'admin'" class="panel-body">
+      <label class="btn btn-info btn-upload" upload-button url="/api/categories" on-success="onSuccess(response)">
+      Upload
+      </label>
+    </div>
+    <div class="table-container">
+      <div class="col-md-12">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Varenummer</th>
+              <th>Varenavn</th>
+              <th></th>
+              <th>Akk.sats</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody data-ng-repeat="categorydata in categoryDataModel.categorydata" data-ng-switch on="subcategoryDataCollapse[$index]">
+            <tr class="clickableRow" data-ng-click="selectTableRow($index, categorydata.category.number)">
+              <td>{{categorydata.category.number}}</td>
+              <td>{{categorydata.category.name}}</td>
+              <td>{{categorydata.category.unit}}</td>
+              <td>{{categorydata.category.price}}</td>
+              <td>{{categorydata.category.extra}}</td>
+            </tr>
+            <tr class="subcateg" data-ng-switch-when="true" ng-hide="isEmpty(categorydata)">
+              <td colspan="5" style="padding: 0px 20px 0px 20px">
+                <div class="span5">
+                  <div>
+                    <table class="table">
+                      <thead class="subcateg">
+                        <tr>
+                          <th>Varenummer</th>
+                          <th>Varenavn</th>
+                          <th></th>
+                          <th>Akk.sats</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr data-ng-repeat="subcategoryData in categoryDataModel.categorydata[$index].data.subcategoryData">
+                          <td>{{subcategoryData.number}}</td>
+                          <td>{{subcategoryData.name}}</td>
+                          <td>{{subcategoryData.unit}}</td>
+                          <td>{{subcategoryData.price}}</td>
+                          <td>{{subcategoryData.extra}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

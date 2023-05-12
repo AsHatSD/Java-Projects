@@ -1,0 +1,471 @@
+<div class="container medium-container">
+  <div class="panel">
+    <div class="panel-body">
+      <h3>Registrering</h3>
+      <form ng-submit="" class="form-horizontal">
+        <div ng-if="pageNumber === 1">
+          <h4>Dato & Sag - Type & Sted</h4>
+          <br>
+          <div class=form-group>
+            <div for="date" class="col-xs-12">
+              <div class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" ng-model="dt" ng-change="changeDate(dt)" is-open="popup.opened"
+                  datepicker-options="dateOptions" ng-required="true">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="openPopup()">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div for="case" class="col-xs-12">Sag</div>
+            <div class="col-xs-12">
+              <select name="case" id="case" class="form-control" ng-model="job.case.name" autofocus>
+              <option value="">Vælg sag</option>
+              <option value="Sag1">Sag1</option>
+              <option value="Sag2">Sag2</option>
+              <option value="Sag3">Sag3</option>
+            </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div for="type" class="col-xs-12">Arbejdstype</div>
+            <div class="col-xs-12">
+              <div class="btn-group btn-group-justified">
+                <label class="btn btn-default" ng-model="job.type" uib-btn-radio="'time_based'">Timearbejde</label>
+                <label class="btn btn-default" ng-model="job.type" uib-btn-radio="'agreement'">Akkord</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div for="place" class="col-xs-12">Arbejdssted</div>
+            <div class="col-xs-12">
+              <select name="place" id="place" class="form-control" ng-model="job.place" autofocus>
+              <option value="">Vælg arbejdssted</option>
+              <option ng-repeat="city in cities" value="{{city}}">{{city}}</option>
+            </select>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="pageNumber === 2">
+          <h4>Materialer</h4>
+
+          <div class="form-group">
+            <div for="category" class="col-xs-12">Fugetype.</div>
+            <div class="col-xs-12">
+              <select name="category" id="category" class="form-control" ng-model="job.category.name">
+              <option value="">Vælg fugetype.</option>
+              <option value="Fugetype1">Fugetype1</option>
+              <option value="Fugetype2">Fugetype2</option>
+              <option value="Fugetype3">Fugetype3</option>
+            </select>
+            </div>
+          </div>
+
+          <div ng-show="usedMaterials.length">
+            <table class="table table-striped table-condensed">
+              <thead>
+                <tr>
+                  <th>Tilføjet materiale</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="usedMaterial in usedMaterials">
+                  <td>{{usedMaterial.material}}</td>
+                  <td>{{usedMaterial.color}}</td>
+                  <td>{{usedMaterial.quantity}}</td>
+                  <td>
+                    <button class="tbutton" ng-click="removeUsedMaterial(usedMaterial)">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            <button ng-hide="open" class="btn btn-primary" ng-click="openUsedMaterials()">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
+            <button ng-show="open" class="btn btn-primary" ng-click="openUsedMaterials()">
+            <span class="glyphicon glyphicon-minus"></span>
+          </button>
+            <span>Tilføj materialer</span>
+          </div>
+
+          <div class="form-group" ng-show="open">
+            <div for="material" class="col-xs-12">Materialer</div>
+            <div class="col-xs-12">
+              <select name="material" id="material" class="form-control" ng-model="usedMaterial.material">
+              <option value="">Vælg materiale</option>
+              <option value="MS20">MS20</option>
+              <option value="M500 SABA">M500 SABA</option>
+            </select>
+            </div>
+
+            <div for="color" class="col-xs-12">Farve.</div>
+            <div class="col-xs-12">
+              <select name="color" id="color" class="form-control" ng-model="usedMaterial.color">
+              <option value="">Vælg farve</option>
+              <option value="Farve1">modehvid</option>
+              <option ng-if="usedMaterial.material === 'MS20'" value="Farve2">betongrå</option>
+              <option ng-if="usedMaterial.material === 'M500 SABA'" value="Farve2">silkegrå</option>
+              <option ng-if="usedMaterial.material === 'MS20'" value="Farve3">lysgrå</option>
+              <option ng-if="usedMaterial.material === 'MS20'" value="Farve4">mørkgrå</option>
+              <option ng-if="usedMaterial.material === 'MS20'" value="Farve5">basaltgrå</option>
+              <option ng-if="usedMaterial.material === 'MS20'" value="Farve6">sort</option>
+              <option ng-if="usedMaterial.material === 'MS20'" value="Farve7">beige</option>
+              <option ng-if="usedMaterial.material === 'MS20'" value="Farve8">brun</option>
+              <option ng-if="usedMaterial.material === 'MS20'" value="Farve9">sandgul</option>
+            </select>             
+            </div>
+
+            <div for="quantity" class="col-xs-12">Antal</div>
+            <div class="col-xs-12">
+            <input name="quantity" id="quantity" class="form-control" ng-model="usedMaterial.quantity" placeholder="Tilføj antal">
+            </div>
+
+            <div class="col-xs-12">
+              <br>
+              <div class="pull-right">
+                <button class="btn btn-primary" ng-click="addUsedMaterial(usedMaterial)">
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="pageNumber === 3">
+          <h4>Ekstra materialer</h4>
+          <div ng-show="usedExtraMaterials.length">
+            <table class="table table-striped table-condensed">
+              <thead>
+                <tr>
+                  <th>Tilføjet ekstra materiale</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="usedExtraMaterial in usedExtraMaterials">
+                  <td>{{usedExtraMaterial.material}}</td>
+                  <td>{{usedExtraMaterial.color}}</td>
+                  <td>{{usedExtraMaterial.quantity}}</td>
+                  <td>
+                    <button class="tbutton" ng-click="removeUsedExtraMaterial(usedExtraMaterial)">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            <button ng-hide="open2" class="btn btn-primary" ng-click="openUsedExtraMaterials()">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
+            <button ng-show="open2" class="btn btn-primary" ng-click="openUsedExtraMaterials()">
+            <span class="glyphicon glyphicon-minus"></span>
+          </button>
+            <span>Tilføj ekstra materialer</span>
+          </div>
+
+          <div class="form-group" ng-show="open2">
+            <div for="material" class="col-xs-12">Materialer</div>
+            <div class="col-xs-12">
+              <select name="material" id="material" class="form-control" ng-model="usedExtraMaterial.material">
+              <option value="">Vælg materiale</option>
+              <option value="MS20">MS20</option>
+              <option value="M500 SABA">M500 SABA</option>
+            </select>
+            </div>
+
+            <div for="color" class="col-xs-12">Farve.</div>
+            <div class="col-xs-12">
+              <select name="color" id="color" class="form-control" ng-model="usedExtraMaterial.color">
+              <option value="">Vælg farve</option>
+              <option value="Farve1">modehvid</option>
+              <option ng-if="usedExtraMaterial.material === 'MS20'" value="Farve2">betongrå</option>
+              <option ng-if="usedExtraMaterial.material === 'M500 SABA'" value="Farve2">silkegrå</option>
+              <option ng-if="usedExtraMaterial.material === 'MS20'" value="Farve3">lysgrå</option>
+              <option ng-if="usedExtraMaterial.material === 'MS20'" value="Farve4">mørkgrå</option>
+              <option ng-if="usedExtraMaterial.material === 'MS20'" value="Farve5">basaltgrå</option>
+              <option ng-if="usedExtraMaterial.material === 'MS20'" value="Farve6">sort</option>
+              <option ng-if="usedExtraMaterial.material === 'MS20'" value="Farve7">beige</option>
+              <option ng-if="usedExtraMaterial.material === 'MS20'" value="Farve8">brun</option>
+              <option ng-if="usedExtraMaterial.material === 'MS20'" value="Farve9">sandgul</option>
+            </select>
+            </div>
+
+            <div for="quantity" class="col-xs-12">Antal</div>
+            <div class="col-xs-12">
+              <input name="quantity" id="quantity" class="form-control" ng-model="usedExtraMaterial.quantity" placeholder="Tilføj antal">
+            </div>
+
+            <div class="col-xs-12">
+              <br>
+              <div class="pull-right">
+                <button class="btn btn-primary" ng-click="addUsedExtraMaterial(usedExtraMaterial)">
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="pageNumber === 4">
+          <div class="form-group" ng-if="job.type === 'time_based'">
+            <div for="timeType" class="col-xs-12">Tidstype</div>
+            <div class="col-xs-12">
+              <select name="timeType" id="timeType" class="form-control" ng-model="job.timeType.name">
+              <option value="">Vælg tidstype</option>
+              <option value="Tidstype1">Tidstype1</option>
+              <option value="Tidstype2">Tidstype2</option>
+              <option value="Tidstype3">Tidstype3</option>
+            </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div for="hours" class="col-xs-12">Antal timer</div>
+            <div class="col-xs-12">
+              <input name="hours" id="hours" class="form-control" ng-model="job.hours" placeholder="Tilføj timer">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div for="price" class="col-xs-12">Sats</div>
+            <div class="col-xs-12">
+              <input name="price" id="price" class="form-control" ng-model="job.price" placeholder="Tilføj sats">
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <div for="consumptionType" class="col-xs-12" ng-show="job.type === 'agreement'">Antal fuger</div>
+            <div for="consumptionType" class="col-xs-12" ng-hide="job.type === 'agreement'">Fuger</div>
+            <div class="col-xs-12">
+              <div class="btn-group btn-group-justified">
+                <label class="btn btn-default" ng-model="job.consumptionType" uib-btn-radio="'meter'">Meter</label>
+                <label class="btn btn-default" ng-model="job.consumptionType" uib-btn-radio="'stk.'">Stk.</label>
+              </div>
+              <div>
+                <br>
+                <input name="consumption" id="consumption" class="form-control" ng-model="job.consumption" placeholder="Tilføj {{job.consumptionType}}">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div for="note" class="col-xs-12">Kommentar</div>
+            <div class="col-xs-12">
+              <textarea name="note" id="note" class="form-control" ng-model="job.note" placeholder="Tilføj kommentar"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="pageNumber === 5">
+          <h4>Lift & bil</h4>
+
+          <div class="form-group">
+            <div for="lift" class="col-xs-12">Lift</div>
+            <div class="col-xs-12">
+              <select name="lift" id="lift" class="form-control" ng-model="job.lift">
+              <option value="">Vælg lift</option>
+              <option value="Lift1">Lift1</option>
+              <option value="Lift2">Lift2</option>
+              <option value="Lift3">Lift3</option>
+            </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div for="car" class="col-xs-12">Egen bil</div>
+            <div class="col-xs-12">
+              <label class="btn btn-success" ng-model="job.car" uib-btn-radio="'Ja'">Ja</label> &nbsp;
+              <label class="btn btn-info" ng-model="job.car" uib-btn-radio="'Nej'">Nej</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div for="distance" class="col-xs-12">Km</div>
+            <div class="col-xs-12">
+              <input name="distance" id="distance" class="form-control" ng-model="job.distance" placeholder="Tilføj km">
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="pageNumber === 6">
+          <h4>Kvalitetssikring</h4>
+
+          <div class="form-group">
+            <div for="caseFinished" class="col-xs-12">Er sagen afsluttet?</div>
+            <div class="col-xs-12">
+              <label class="btn btn-success" ng-model="job.finishedCase" uib-btn-radio="'Ja'">Ja</label> &nbsp;
+              <label class="btn btn-info" ng-model="job.finishedCase" uib-btn-radio="'Nej'">Nej</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div for="qualityCheck" class="col-xs-12">Har du husket at kvalitetssikre?</div>
+            <div class="col-xs-12">
+              <label class="btn btn-success" ng-model="job.qualityCheck" uib-btn-radio="'Ja'">Ja</label> &nbsp;
+              <label class="btn btn-info" ng-model="job.qualityCheck" uib-btn-radio="'Nej'">Nej</label>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="pageNumber === 7">
+          <h4>Oversigt</h4>
+          <div>
+            <label>Dato:</label>
+            <span>{{temp_job.date | date: 'dd-MM-yyyy'}}</span>
+          </div>
+          <div>
+            <label>Sag:</label>
+            <span>{{temp_job.case.name}}</span>
+          </div>
+          <div>
+            <label>Arbejdstype:</label>
+            <span ng-show="temp_job.type === 'agreement'">Akkord</span>
+            <span ng-hide="temp_job.type === 'agreement'">Timearbejde</span>
+          </div>
+          <div>
+            <label>Arbejdssted:</label>
+            <span>{{temp_job.place}}</span>
+          </div>
+          <div>
+            <label>Fugetype:</label>
+            <span>{{temp_job.category.name}}</span>
+          </div>
+          <div>
+            <label>Materialer:</label>
+            <span ng-repeat="usedMaterial in temp_job.usedMaterials">
+              {{usedMaterial.material}}, {{usedMaterial.color}}, {{usedMaterial.quantity}}
+              <span ng-hide="$last"> - </span>
+            </span>
+          </div>
+          <div>
+            <label>Ekstra materialer:</label>
+            <span ng-repeat="usedExtraMaterial in temp_job.usedExtraMaterials">
+              {{usedExtraMaterial.material}}, {{usedExtraMaterial.color}}, {{usedExtraMaterial.quantity}}
+              <span ng-hide="$last"> - </span>
+            </span>
+          </div>
+          <div ng-if="temp_job.type === 'time_based' ">
+            <label>Tidstype:</label>
+            <span>{{temp_job.timeType.name}}</span>
+          </div>
+          <div>
+            <label>Antal timer:</label>
+            <span>{{temp_job.hours}} timer</span>
+          </div>
+          <div>
+            <label>Sats:</label>
+            <span>{{temp_job.price}}</span>
+          </div>
+          <div>
+            <label>Fuger:</label>
+            <span>{{temp_job.consumption}} {{temp_job.consumptionType}}</span>
+          </div>
+          <div>
+            <label>Kommentar:</label>
+            <span>{{temp_job.note}}</span>
+          </div>
+          <div>
+            <label>Lift:</label>
+            <span>{{temp_job.lift}}</span>
+          </div>
+          <div>
+            <label>Egen bil:</label>
+            <span ng-if="temp_job.car === 'Ja'">Ja, {{temp_job.distance}} km</span>
+          </div>
+          <div>
+            <label>Er sagens afsluttet?:</label>
+            <span>{{temp_job.finishedCase}}</span>
+          </div>
+          <div>
+            <label>Har du husket at kvalitetssikre?:</label>
+            <span>{{temp_job.qualityCheck}}</span>
+          </div>
+          <br>
+          <div>
+            <label>Udregner løn:</label>
+            <span>{{getSalary()}} DKK</span>
+          </div>
+
+
+          <div class="form-group">
+            <div class="col-xs-12">
+              <button type="button" class="btn btn-primary" ng-click="changePage(1)">Ændre</button>
+              <button type="button" class="btn btn-primary" ng-click="addNewJob()">Godkend</button>
+            </div>
+
+          </div>
+        </div>
+      </form>
+
+
+
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li ng-show="pageNumber === 1" class="disabled">
+            <a aria-label="Previous">
+              <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+            </a>
+          </li>
+          <li ng-hide="pageNumber === 1">
+            <a href="#" ng-click="goToPrevious()" aria-label="Previous">
+              <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+            </a>
+          </li>
+          <li ng-class="{'active': pageNumber === 1}">
+            <a href="#" ng-click="changePage(1)">1</a>
+          </li>
+          <li ng-class="{'active': pageNumber === 2}">
+            <a href="#" ng-click="changePage(2)">2</a>
+          </li>
+          <li ng-class="{'active': pageNumber === 3}">
+            <a href="#" ng-click="changePage(3)">3</a>
+          </li>
+          <li ng-class="{'active': pageNumber === 4}">
+            <a href="#" ng-click="changePage(4)">4</a>
+          </li>
+          <li ng-class="{'active': pageNumber === 5}">
+            <a href="#" ng-click="changePage(5)">5</a>
+          </li>
+          <li ng-class="{'active': pageNumber === 6}">
+            <a href="#" ng-click="changePage(6)">6</a>
+          </li>
+          <li ng-class="{'active': pageNumber === 7}">
+            <a href="#" ng-click="changePage(7)">7</a>
+          </li>
+          <li ng-hide="pageNumber === 7">
+            <a href="#" ng-click="goToNext()" aria-label="Next">
+              <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+            </a>
+          </li>
+          <li ng-show="pageNumber === 7" class="disabled">
+            <a aria-label="Next">
+              <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+    </div>
+  </div>
+</div>
