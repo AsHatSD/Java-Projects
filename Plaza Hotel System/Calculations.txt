@@ -1,0 +1,26 @@
+try {
+            Connection conn = DBConnector.getConnection();
+            String x = systemgui.ok + "";
+            String sql = "SELECT * FROM rooms WHERE room =" + x;
+
+            System.out.println(sql);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.executeQuery();
+
+            ResultSet rs = pstmt.getResultSet();
+            if (rs.next()) {
+                int room = rs.getInt("room");
+                String customer_name = rs.getString("customer_name");
+                String checkin = rs.getString("checkin");
+                String checkout = rs.getString("checkout");
+                String temp_sum = calculations(room,checkin,checkout);
+                Double total_sum=Double.parseDouble(temp_sum);
+                update(room, customer_name, checkin, checkout, total_sum);
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+
