@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="panel">
+    <div class="panel-heading">
+      <h3 class="panel-title" ng-show="currentUser.type === 'admin'">Medarbejdere</h3>
+      <h3 class="panel-title" ng-show="currentUser.type === 'system_admin'">Brugere</h3>
+    </div>
+    <div class="panel-body">
+      <button ng-show="currentUser.type === 'admin'" class="btn btn-info" ng-click="goToCreate()">
+          Opret ny medarbejder
+          </button>
+      <button ng-show="currentUser.type === 'system_admin'" class="btn btn-info" ng-click="goToCreate()">
+          Opret ny bruger
+          </button>
+    </div>
+    <br>
+    <div class="table-container" ng-if="users.length">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nummer</th>
+            <th>Navn</th>
+            <th>Type</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in users">
+            <td>{{user.number}}</td>
+            <td>{{user.name}}</td>
+            <td>{{user.type}}</td>
+            <td class="text-right">
+              <button type="button" class="tbutton" ng-click="editUser(user)">
+                  <span class="glyphicon glyphicon-pencil" title="Rediger"></span>
+              </button>
+              <button type="button" class="tbutton" ng-click="deleteUser(user)">
+                <span class="glyphicon glyphicon-remove" title="Slet"></span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
